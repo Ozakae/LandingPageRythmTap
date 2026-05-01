@@ -1,0 +1,61 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-deep: #07071a;
+  --bg-panel: #0b0b28;
+  --bg-lane: rgba(255, 255, 255, 0.015);
+  --color-primary: #9898e8;
+  --color-perfect: #aaaaff;
+  --color-good: #88ddaa;
+  --color-miss: #ee6666;
+  --color-penalty: #ff8866;
+  --color-note: #6666dd;
+  --color-note-top: #9999ff;
+  --border-lane: rgba(255, 255, 255, 0.04);
+  --border-key: #252566;
+  --font-game: 'Courier New', Courier, monospace;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg-deep);
+  color: var(--color-primary);
+  font-family: var(--font-game);
+}
+
+@keyframes floatup {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-52px); }
+}
+
+/* @keyframes screenshake {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-5px, 1px); }
+  40%  { transform: translate(5px, -1px); }
+  60%  { transform: translate(-3px, 1px); }
+  80%  { transform: translate(2px, 0); }
+  100% { transform: translate(0, 0); }
+} */
+
+@keyframes screenshake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-3px, 1px); }
+  50%  { transform: translate(3px, -1px); }
+  75%  { transform: translate(-2px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes notepop {
+  0%   { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
