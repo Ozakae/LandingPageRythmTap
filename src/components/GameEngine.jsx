@@ -6,9 +6,9 @@ import { useSettings } from '../context/SettingsContext'
 // import { generateBeatmap } from '../utils/generateBeatmap'
 
 const REFF_SPOTS = [
-  { start: 49000,  end: 69000  },
-  { start: 99000,  end: 118000 },
-  { start: 168000, end: 188000 },
+  { start: 49000,  end: 69000,  video: '/videos/bubble-pop-reff.mp4'  },
+  { start: 99000,  end: 118000, video: '/videos/bubble-pop-reff2.mp4' },
+  { start: 168000, end: 188000, video: '/videos/bubble-pop-reff2.mp4' },
 ]
 
 const NOTE_SPEED = 300
@@ -164,6 +164,8 @@ export default function GameEngine() {
   const [endStats, setEndStats] = useState(null)
   const [reffPhase, setReffPhase] = useState('hidden')
   const reffPhaseRef = useRef('hidden')
+  const [activeVideo, setActiveVideo] = useState('/videos/bubble-pop-reff.mp4')
+
 
   const g = useRef({
     running: false,
@@ -215,23 +217,15 @@ export default function GameEngine() {
       const currentSpot = REFF_SPOTS.find(s => elapsed >= s.start && elapsed <= s.end)
       const inReff = !!currentSpot
       const nearEnd = currentSpot ? elapsed >= currentSpot.end - 1500 : false
-          
+
       if (inReff && !nearEnd && reffPhaseRef.current === 'hidden') {
         reffPhaseRef.current = 'entering'
+        setActiveVideo(currentSpot.video)
         setReffPhase('entering')
         setTimeout(() => {
           reffPhaseRef.current = 'visible'
           setReffPhase('visible')
         }, 800)
-      }
-      
-      if (nearEnd && reffPhaseRef.current === 'visible') {
-        reffPhaseRef.current = 'leaving'
-        setReffPhase('leaving')
-        setTimeout(() => {
-          reffPhaseRef.current = 'hidden'
-          setReffPhase('hidden')
-        }, 1500)
       }
 
       if (nearEnd && reffPhaseRef.current === 'visible') {
@@ -441,23 +435,24 @@ export default function GameEngine() {
           }} />
 
           <video
-  src="/videos/bubble-pop-reff.mp4"
-  autoPlay
-  muted
-  loop
-  playsInline
-  style={{
-    position: 'absolute',
-    top: '50%', left: '50%',
-    transform: 'translate(-50%, -50%)',
-    minWidth: '100%', minHeight: '100%',
-    width: 'auto', height: 'auto',
-    objectFit: 'cover',
-    opacity: 0.4,
-    filter: 'saturate(0.6) hue-rotate(300deg) brightness(0.8)',
-    zIndex: 0,
-  }}
-/>
+            key={activeVideo}
+            src={activeVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              position: 'absolute',
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
+              minWidth: '100%', minHeight: '100%',
+              width: 'auto', height: 'auto',
+              objectFit: 'cover',
+              opacity: 0.6,
+              filter: 'saturate(0.8) brightness(0.9)',
+              zIndex: 0,
+            }}
+          />
         </div>
       )}
 
