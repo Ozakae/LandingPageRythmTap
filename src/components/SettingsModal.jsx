@@ -1,68 +1,68 @@
+// ============================================================
+//  SettingsModal.jsx
+//  Popup pengaturan key mapping (path: tampil di atas Home)
+//
+//  Komponen ini menerima PROPS dari Home.jsx:
+//    onClose → fungsi yang dipanggil untuk menutup modal
+//
+//  Komponen ini membaca & mengubah CONTEXT dari SettingsContext:
+//    presetKey    → nama preset yang sedang aktif (contoh: 'DFJK')
+//    presets      → semua preset yang tersedia
+//    changePreset → fungsi untuk ganti preset
+//
+//  Struktur tampilan :
+//  1. Overlay       — latar gelap di belakang modal (klik = tutup)
+//  2. Modal Box     — kotak popup putih
+//     2a. Header    — judul + tombol X
+//     2b. Body      — daftar preset kartu + tombol Tutup
+//     2c. Accent    — garis merah dekoratif di bawah
+// ============================================================
+
 import { useSettings } from '../context/SettingsContext'
+import './SettingsModal.css'
+
 
 export default function SettingsModal({ onClose }) {
+  // Ambil data dari SettingsContext:
+  //   presetKey    → preset yang aktif sekarang, contoh: 'DFJK'
+  //   presets      → semua preset: { DFJK: {...}, ASDF: {...}, ARROWS: {...} }
+  //   changePreset → fungsi untuk ganti preset + simpan ke localStorage
   const { presetKey, presets, changePreset } = useSettings()
 
+
   return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 200,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'rgba(4,0,4,0.88)',
-      backdropFilter: 'blur(6px)',
-    }}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    // ══════════════════════════════════════════════════
+    // 1. OVERLAY (Latar Gelap)
+    // Menutupi seluruh layar di belakang modal.
+    //   position: fixed = selalu di atas semua konten
+    //   inset: 0        = mengisi penuh (top/right/bottom/left = 0)
+    //   zIndex: 200     = lebih tinggi dari navbar (z:100) agar di atas
+    //   backdropFilter  = efek blur di belakang overlay
+    //
+    // Klik overlay (bukan modal) → tutup modal:
+    //   e.target         = elemen yang diklik
+    //   e.currentTarget  = elemen yang punya event listener ini (overlay)
+    //   kalau keduanya sama = user klik di luar modal → onClose()
+    // ══════════════════════════════════════════════════
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(4,0,4,0.88)',
+        backdropFilter: 'blur(6px)',
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&display=swap');
 
-        @keyframes modal-rise {
-          from { opacity: 0; transform: translateY(20px) scale(0.97); }
-          to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .preset-card {
-          padding: 1rem 1.25rem;
-          border-radius: 2px;
-          cursor: pointer;
-          transition: all 0.2s;
-          position: relative;
-          overflow: hidden;
-        }
-        .preset-card:hover {
-          background: rgba(100,0,25,0.25) !important;
-          border-color: rgba(200,0,40,0.5) !important;
-        }
-        .preset-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0; height: 1.5px;
-          background: linear-gradient(90deg, transparent, #cc0035, transparent);
-          transform: translateX(-100%);
-          transition: transform 0.4s;
-        }
-        .preset-card:hover::before { transform: translateX(0); }
-
-        .close-btn {
-          background: transparent;
-          border: 0.5px solid rgba(180,0,40,0.3);
-          border-radius: 2px;
-          color: rgba(220,170,170,0.6);
-          font-family: 'Cinzel Decorative', serif;
-          font-size: 11px;
-          letter-spacing: 0.2em;
-          padding: 10px 32px;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-transform: uppercase;
-        }
-        .close-btn:hover {
-          border-color: rgba(200,0,40,0.6);
-          color: #f5d5d8;
-          background: rgba(80,0,20,0.2);
-        }
-      `}</style>
-
-      {/* ── Modal box ── */}
+      {/* ══════════════════════════════════════════════════
+          2. MODAL BOX
+          Kotak putih di tengah layar.
+          min(480px, 92vw) = max lebar 480px, di HP max 92% layar.
+          Animasi modal-rise = muncul dengan efek spring dari bawah.
+          overflow: hidden = sudut melengkung tidak terpotong isi
+      ══════════════════════════════════════════════════ */}
       <div style={{
         width: 'min(480px, 92vw)',
         background: '#0e000e',
@@ -72,25 +72,34 @@ export default function SettingsModal({ onClose }) {
         animation: 'modal-rise 0.35s cubic-bezier(0.175,0.885,0.32,1.1) both',
       }}>
 
-        {/* Header */}
+        {/* ── 2a. HEADER ──────────────────────────────────
+            Berisi label kecil, judul "Settings", dan tombol X.
+            justifyContent: space-between = label di kiri, X di kanan */}
         <div style={{
           padding: '1.25rem 1.75rem',
           borderBottom: '0.5px solid rgba(180,0,40,0.2)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           background: 'rgba(40,0,10,0.5)',
         }}>
+          {/* Kiri: label + judul */}
           <div>
             <p style={{
               fontFamily: 'Cinzel Decorative, serif',
               fontSize: 9, color: '#cc0035',
               letterSpacing: '0.3em', marginBottom: 5,
-            }}>RHYTHM TAP</p>
+            }}>
+              RHYTHM TAP
+            </p>
             <h2 style={{
               fontFamily: 'Cinzel Decorative, serif',
               fontSize: 18, color: '#f5d5d8',
               fontWeight: 700, letterSpacing: '0.08em',
-            }}>Settings</h2>
+            }}>
+              Settings
+            </h2>
           </div>
+
+          {/* Kanan: tombol X untuk tutup modal */}
           <button
             onClick={onClose}
             style={{
@@ -101,32 +110,54 @@ export default function SettingsModal({ onClose }) {
             }}
             onMouseEnter={e => e.target.style.color = '#f5d5d8'}
             onMouseLeave={e => e.target.style.color = 'rgba(180,100,100,0.4)'}
-          >✕</button>
+          >
+            ✕
+          </button>
         </div>
 
-        {/* Body */}
+
+        {/* ── 2b. BODY ────────────────────────────────────
+            Isi utama modal: daftar preset + tombol Tutup */}
         <div style={{ padding: '1.75rem' }}>
 
           {/* Section: Key Mapping */}
           <div style={{ marginBottom: '2rem' }}>
+
+            {/* Judul section dengan garis di kiri & kanan */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1.25rem' }}>
               <div style={{ flex: 1, height: 1, background: 'rgba(180,0,40,0.15)' }} />
               <p style={{
                 fontFamily: 'Cinzel Decorative, serif',
-                fontSize: 9, color: '#cc0035', letterSpacing: '0.25em',
-                whiteSpace: 'nowrap',
-              }}>KEY MAPPING</p>
+                fontSize: 9, color: '#cc0035',
+                letterSpacing: '0.25em', whiteSpace: 'nowrap',
+              }}>
+                KEY MAPPING
+              </p>
               <div style={{ flex: 1, height: 1, background: 'rgba(180,0,40,0.15)' }} />
             </div>
 
+            {/* ── Daftar Preset ──────────────────────────
+                Object.entries(presets) mengubah object menjadi array:
+                { DFJK: {...}, ASDF: {...} }
+                  → [['DFJK', {...}], ['ASDF', {...}], ...]
+
+                Lalu di-map menjadi kartu pilihan.
+                isActive = true kalau preset ini yang sedang dipilih.
+
+                Setiap kartu:
+                - Kiri  : badge tiap tombol keyboard
+                - Kanan : label preset + titik merah (kalau aktif)
+            ─────────────────────────────────────────── */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {Object.entries(presets).map(([key, preset]) => {
+                // isActive: true kalau preset ini = preset yang sedang aktif
                 const isActive = presetKey === key
+
                 return (
                   <div
                     key={key}
                     className="preset-card"
-                    onClick={() => changePreset(key)}
+                    onClick={() => changePreset(key)} /* klik = ganti preset */
                     style={{
                       border: `0.5px solid ${isActive ? 'rgba(200,0,40,0.55)' : 'rgba(180,0,40,0.2)'}`,
                       background: isActive ? 'rgba(100,0,25,0.2)' : 'rgba(40,0,10,0.3)',
@@ -134,7 +165,7 @@ export default function SettingsModal({ onClose }) {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-                      {/* Key badges */}
+                      {/* Kiri: badge tiap tombol di preset ini */}
                       <div style={{ display: 'flex', gap: 6 }}>
                         {preset.display.map((k, i) => (
                           <div key={i} style={{
@@ -144,23 +175,32 @@ export default function SettingsModal({ onClose }) {
                             border: `1px solid ${isActive ? 'rgba(200,0,40,0.5)' : 'rgba(180,0,40,0.2)'}`,
                             borderRadius: 4,
                             fontFamily: 'Courier New, monospace',
+                            /* Kalau teks > 1 karakter (misal: '←'), kecilkan font */
                             fontSize: k.length > 1 ? 14 : 16,
                             fontWeight: 700,
                             color: isActive ? '#ff8098' : 'rgba(180,80,100,0.5)',
                             boxShadow: isActive ? '0 0 10px rgba(200,0,40,0.2)' : 'none',
                             transition: 'all 0.2s',
-                          }}>{k}</div>
+                          }}>
+                            {k}
+                          </div>
                         ))}
                       </div>
 
-                      {/* Active indicator */}
+                      {/* Kanan: label preset + indikator aktif */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        {/* Label teks preset, contoh: "D F J K" */}
                         <p style={{
                           fontFamily: 'Cormorant Garamond, serif',
                           fontSize: 13, fontStyle: 'italic',
                           color: isActive ? 'rgba(220,170,170,0.7)' : 'rgba(180,100,100,0.3)',
                           transition: 'color 0.2s',
-                        }}>{preset.label}</p>
+                        }}>
+                          {preset.label}
+                        </p>
+
+                        {/* Titik merah — hanya muncul kalau preset ini aktif
+                            isActive && <...> = render hanya kalau isActive true */}
                         {isActive && (
                           <div style={{
                             width: 6, height: 6, borderRadius: '50%',
@@ -169,23 +209,25 @@ export default function SettingsModal({ onClose }) {
                           }} />
                         )}
                       </div>
+
                     </div>
                   </div>
                 )
               })}
             </div>
 
+            {/* Teks keterangan di bawah daftar preset */}
             <p style={{
               fontFamily: 'Cormorant Garamond, serif',
               fontSize: 12, fontStyle: 'italic',
-              color: 'rgba(180,100,100,0.35)',
+              color: 'rgb(255, 212, 212)',
               marginTop: '1rem', textAlign: 'center',
             }}>
               Klik preset untuk mengubah key mapping · Tersimpan otomatis
             </p>
           </div>
 
-          {/* Close button */}
+          {/* Tombol Tutup di tengah bawah */}
           <div style={{ textAlign: 'center' }}>
             <button className="close-btn" onClick={onClose}>
               Tutup
@@ -193,11 +235,15 @@ export default function SettingsModal({ onClose }) {
           </div>
         </div>
 
-        {/* Bottom accent line */}
+
+        {/* ── 2c. ACCENT LINE ─────────────────────────────
+            Garis merah tipis dekoratif di paling bawah modal.
+            Murni visual, tidak ada fungsi interaktif. */}
         <div style={{
           height: 2,
           background: 'linear-gradient(90deg, transparent, #cc0035, transparent)',
         }} />
+
       </div>
     </div>
   )

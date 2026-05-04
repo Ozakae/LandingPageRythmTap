@@ -1,0 +1,149 @@
+/* ============================================================
+   GameEngine.css
+   Styling untuk komponen GameEngine.jsx
+
+   Struktur file:
+   1. Google Fonts Import
+   2. Animasi (Keyframes)
+   3. Komponen: Tombol CTA (Mulai/Restart)
+   4. Komponen: Tombol Ghost (Outline)
+   5. Komponen: Tombol Text (Kembali)
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────
+   1. GOOGLE FONTS
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+
+
+/* ─────────────────────────────────────────────
+   2. ANIMASI (Keyframes)
+───────────────────────────────────────────── */
+
+/* Teks feedback (PERFECT/GOOD/MISS) melayang ke atas lalu menghilang */
+@keyframes floatup {
+  0%   { opacity: 1; transform: translateY(0)     scale(1);   }
+  100% { opacity: 0; transform: translateY(-56px) scale(1.1); }
+}
+
+/* Layar bergetar saat miss — efek visual "sakit" */
+@keyframes screenshake {
+  0%   { transform: translate(0, 0);    }
+  25%  { transform: translate(-3px, 1px);  }
+  50%  { transform: translate(3px, -1px);  }
+  75%  { transform: translate(-2px, 0);    }
+  100% { transform: translate(0, 0);    }
+}
+
+/* Berputar (untuk ikon loading jika dipakai) */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Cahaya merah berdenyut (untuk tombol CTA) */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(180,0,40,0.4), 0 0 60px rgba(180,0,40,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(220,0,60,0.7), 0 0 100px rgba(220,0,60,0.3); }
+}
+
+/* Note muncul dari atas lane dengan sedikit scale */
+@keyframes note-enter {
+  from { opacity: 0; transform: scaleY(0.4); }
+  to   { opacity: 1; transform: scaleY(1);   }
+}
+
+/* Efek kedip untuk judul */
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1;    }
+  96%            { opacity: 0.6;  }
+  98%            { opacity: 0.85; }
+}
+
+/* Rank (S/A/B/C) muncul dengan efek pop/spring */
+@keyframes rank-pop {
+  0%   { transform: scale(0.5);  opacity: 0; }
+  70%  { transform: scale(1.15);             }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* Video background reff muncul (fade in + sedikit zoom out) */
+@keyframes reff-fadein {
+  from { opacity: 0; transform: scale(1.05); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+/* Video background reff menghilang (fade out + sedikit zoom in) */
+@keyframes reff-fadeout {
+  from { opacity: 1; transform: scale(1);    }
+  to   { opacity: 0; transform: scale(0.97); }
+}
+
+
+/* ─────────────────────────────────────────────
+   3. TOMBOL CTA — Merah solid (MULAI, MAIN LAGI)
+───────────────────────────────────────────── */
+.game-cta-btn {
+  padding: 12px 36px;
+  background: linear-gradient(135deg, #8b0020, #cc0035);
+  color: #fff0f0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+  transition: transform 0.15s;
+}
+
+.game-cta-btn:hover  { transform: scale(1.04); }
+.game-cta-btn:active { transform: scale(0.97); }
+
+
+/* ─────────────────────────────────────────────
+   4. TOMBOL GHOST — Transparan dengan border (RESTART, MENU)
+───────────────────────────────────────────── */
+.ghost-btn {
+  padding: 12px 36px;
+  background: transparent;
+  color: rgba(220,170,170,0.5);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 0.5px solid rgba(180,0,40,0.35);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ghost-btn:hover {
+  border-color: rgba(220,0,60,0.6);
+  color: #f5d5d8;
+  background: rgba(80,0,20,0.2);
+}
+
+
+/* ─────────────────────────────────────────────
+   5. TOMBOL TEXT — Tanpa border (Kembali ke Menu)
+───────────────────────────────────────────── */
+.text-btn {
+  background: transparent;
+  border: none;
+  color: rgb(255, 141, 160);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  cursor: pointer;
+  transition: color 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.text-btn:hover { color: #f5d5d8; }

@@ -1,0 +1,128 @@
+/* ============================================================
+   Home.css
+   Styling untuk halaman Home.jsx (menu pilih lagu)
+
+   Struktur file:
+   1. Google Fonts Import
+   2. Animasi (Keyframes)
+   3. Komponen: Song Card
+   4. Komponen: Tombol CTA (Play)
+   5. Komponen: Tombol Back
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────
+   1. GOOGLE FONTS
+   Font yang sama dengan LandingPage supaya
+   tampilan konsisten di seluruh aplikasi.
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+
+/* ─────────────────────────────────────────────
+   2. ANIMASI (Keyframes)
+   Reused dari LandingPage — konsisten secara visual.
+   Catatan: kalau nanti pakai CSS global (index.css),
+   keyframes ini bisa dipindah ke sana agar tidak duplikat.
+───────────────────────────────────────────── */
+
+/* Naik-turun perlahan (untuk ikon bunga) */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Cahaya merah berdenyut (untuk tombol PLAY) */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(180,0,40,0.4), 0 0 60px rgba(180,0,40,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(220,0,60,0.7), 0 0 100px rgba(220,0,60,0.3); }
+}
+
+/* Efek kedip (untuk judul RHYTHM TAP) */
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%            { opacity: 0.6; }
+  98%            { opacity: 0.85; }
+}
+
+/* Muncul dari bawah dengan fade in */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────
+   3. SONG CARD
+   Kartu lagu yang bisa diklik untuk dipilih.
+   Warna border & background berubah saat dipilih
+   (dikontrol via inline style di JSX berdasarkan state).
+───────────────────────────────────────────── */
+.song-card {
+  padding: 1.25rem 1.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Garis merah animasi yang muncul di atas kartu saat hover */
+.song-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #cc0035, transparent);
+  transform: translateX(-100%); /* tersembunyi di kiri */
+  transition: transform 0.5s;
+}
+
+/* Saat hover: garis bergeser masuk ke posisi normal */
+.song-card:hover::before { transform: translateX(0); }
+
+
+/* ─────────────────────────────────────────────
+   4. TOMBOL CTA — PLAY
+   Tombol merah besar untuk mulai bermain.
+───────────────────────────────────────────── */
+.cta-btn {
+  padding: 14px 52px;
+  background: linear-gradient(135deg, #8b0020, #cc0035);
+  color: #fff0f0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+  transition: transform 0.15s;
+}
+
+.cta-btn:hover  { transform: scale(1.04); }
+.cta-btn:active { transform: scale(0.97); }
+
+
+/* ─────────────────────────────────────────────
+   5. TOMBOL BACK — Kembali
+   Tombol transparan di pojok kiri atas.
+───────────────────────────────────────────── */
+.back-btn {
+  background: transparent;
+  border: none;
+  color: rgb(253, 230, 230);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+
+.back-btn:hover { color: rgba(220,170,170,0.7); }

@@ -52,10 +52,10 @@ JSON
 
 ```
 
-5. TUGAS PERTAMAMU
+5. TUGAS PERTAMAMU!
 
 1. Bantu saya inisialisasi struktur folder di Laravel 12 yang sudah terintegrasi dengan Vite, React, dan Chakra UI.
-2. Buatlah Game Engine sederhana di React yang mencakup: `RequestAnimationFrame` untuk pergerakan notes, logika deteksi input keyboard (D,F,J,K), dan sistem pengurangan skor -10 jika asal tekan.
+2. Buatlah Game Engine sederhana di React yang mencakup : `RequestAnimationFrame` untuk pergerakan notes, logika deteksi input keyboard (D,F,J,K), dan sistem pengurangan skor -10 jika asal tekan.
 3. Implementasikan Howler.js untuk memutar satu lagu testing.
 Menurutmu bagaimana? Bisa? Ayo kita diskusikan dulu gimana enaknya sebelum mulai ngoding dan mengembangkan gamenya!"
 

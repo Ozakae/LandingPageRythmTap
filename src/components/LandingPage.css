@@ -1,0 +1,301 @@
+/* ============================================================
+   LandingPage.css
+   Semua styling untuk halaman LandingPage.jsx
+   
+   Struktur file ini:
+   1. Google Fonts Import
+   2. Reset & Base
+   3. Animasi (Keyframes)
+   4. Komponen: Button CTA
+   5. Komponen: Feature Card
+   6. Komponen: Key Badge
+   7. Komponen: Song Card
+   8. Komponen: Navbar Link
+   9. Utilitas: Reveal (scroll animation)
+   10. Utilitas: Divider, Label, Title
+   11. Scrollbar Custom
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────
+   1. GOOGLE FONTS
+   Mengimpor font dekoratif dari internet.
+   - Cinzel Decorative : font judul bergaya gothic/klasik
+   - Cormorant Garamond: font body bergaya elegan/serif
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+
+/* ─────────────────────────────────────────────
+   2. RESET & BASE
+   Menghapus margin/padding bawaan browser
+   agar tampilan konsisten di semua browser.
+   box-sizing: border-box = padding tidak
+   menambah ukuran elemen (lebih mudah dihitung)
+───────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   3. ANIMASI (KEYFRAMES)
+   Definisi gerakan yang bisa dipakai berkali-kali.
+   Dipanggil via: animation: nama-animasi durasi...
+───────────────────────────────────────────── */
+
+/* Naik-turun perlahan (untuk logo & scroll hint) */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* Cahaya merah berdenyut (untuk tombol CTA) */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(180,0,40,0.4), 0 0 60px rgba(180,0,40,0.2); }
+  50%       { box-shadow: 0 0 40px rgba(220,0,60,0.7), 0 0 100px rgba(220,0,60,0.35); }
+}
+
+/* Berputar terus menerus */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Berkedip seperti lampu yang mau mati (untuk judul navbar) */
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%            { opacity: 0.7; }
+  98%            { opacity: 0.9; }
+}
+
+/* Muncul dari bawah dengan fade in (untuk elemen hero) */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(60px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Bergeser ke samping (dekorasi duri, tidak dipakai aktif) */
+@keyframes thorns-drift {
+  0%   { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-50%) rotate(2deg); }
+}
+
+
+/* ─────────────────────────────────────────────
+   4. TOMBOL CTA (Call To Action)
+   Tombol merah utama: "MAIN SEKARANG", "Play Now"
+───────────────────────────────────────────── */
+.cta-btn {
+  display: inline-block;
+  padding: 18px 56px;
+  background: linear-gradient(135deg, #8b0020, #cc0035);
+  color: #fff0f0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden; /* sembunyikan efek cahaya yang keluar area tombol */
+  animation: pulse-glow 2.5s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+
+/* Efek cahaya putih yang melintas saat hover */
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; /* mulai dari luar kiri */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s;
+}
+
+/* Saat hover: cahaya bergerak dari kiri ke kanan */
+.cta-btn:hover::before { left: 100%; }
+
+/* Saat hover: tombol sedikit membesar */
+.cta-btn:hover  { transform: scale(1.04); }
+
+/* Saat diklik: tombol sedikit mengecil (efek "ditekan") */
+.cta-btn:active { transform: scale(0.98); }
+
+
+/* ─────────────────────────────────────────────
+   5. FEATURE CARD
+   Kartu fitur di section "Fitur Utama"
+───────────────────────────────────────────── */
+.feature-card {
+  background: rgba(80,0,20,0.15);
+  border: 0.5px solid rgba(180,0,40,0.3);
+  border-radius: 4px;
+  padding: 2rem 1.75rem;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  cursor: default;
+}
+
+.feature-card:hover {
+  background: rgba(120,0,30,0.25);
+  border-color: rgba(220,0,60,0.6);
+  transform: translateY(-4px); /* sedikit naik saat di-hover */
+}
+
+
+/* ─────────────────────────────────────────────
+   6. KEY BADGE
+   Kotak tombol keyboard (D, F, J, K) di
+   section "Cara Bermain"
+───────────────────────────────────────────── */
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: rgba(80,0,20,0.4);
+  border: 1.5px solid rgba(200,0,50,0.5);
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff8098;
+  box-shadow: 0 0 12px rgba(200,0,50,0.2);
+  transition: all 0.2s;
+}
+
+.key-badge:hover {
+  border-color: #cc0035;
+  box-shadow: 0 0 20px rgba(200,0,50,0.5);
+  color: #ffaabb;
+}
+
+
+/* ─────────────────────────────────────────────
+   7. SONG CARD
+   Kartu lagu di section "Song Preview"
+───────────────────────────────────────────── */
+.song-card {
+  background: rgba(60,0,15,0.3);
+  border: 0.5px solid rgba(180,0,40,0.25);
+  border-radius: 4px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Garis merah yang melintas dari kiri saat hover */
+.song-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #cc0035, transparent);
+  transform: translateX(-100%); /* tersembunyi di kiri */
+  transition: transform 0.5s;
+}
+
+/* Saat hover: garis bergerak ke posisi normal */
+.song-card:hover::before { transform: translateX(0); }
+
+.song-card:hover {
+  background: rgba(100,0,25,0.35);
+  border-color: rgba(220,0,60,0.5);
+  transform: translateY(-3px);
+}
+
+
+/* ─────────────────────────────────────────────
+   8. NAVBAR LINK
+   Tombol navigasi di bagian atas (Fitur, Cara Main, dll)
+───────────────────────────────────────────── */
+.nav-link {
+  color: rgba(240,200,200,0.6);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+}
+
+.nav-link:hover { color: #ff8098; }
+
+
+/* ─────────────────────────────────────────────
+   9. REVEAL (Animasi scroll)
+   Elemen dengan class .reveal akan tersembunyi dulu,
+   lalu muncul saat masuk viewport (area layar).
+   JavaScript (IntersectionObserver) yang menambahkan
+   class .visible saat elemen terdeteksi di layar.
+───────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);    /* posisi awal: sedikit di bawah */
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);       /* posisi akhir: normal */
+}
+
+/* Delay berbeda-beda untuk efek "berturut-turut" */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.25s; }
+.reveal-delay-3 { transition-delay: 0.4s; }
+.reveal-delay-4 { transition-delay: 0.55s; }
+
+
+/* ─────────────────────────────────────────────
+   10. UTILITAS: Divider, Label, Title
+   Elemen kecil yang dipakai berulang di tiap section
+───────────────────────────────────────────── */
+
+/* Garis pembatas merah di tengah (————) */
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #cc0035, transparent);
+  margin: 1.25rem auto;
+}
+
+/* Label kecil di atas judul section (contoh: "Yang Membuat Kami Beda") */
+.section-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: #cc0035;
+  text-transform: uppercase;
+}
+
+/* Judul besar tiap section */
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(24px, 4vw, 38px); /* responsive: min 24px, max 38px */
+  font-weight: 700;
+  color: #f5d5d8;
+  line-height: 1.25;
+}
+
+
+/* ─────────────────────────────────────────────
+   11. SCROLLBAR CUSTOM
+   Mengubah tampilan scrollbar browser menjadi
+   lebih tipis dan berwarna merah sesuai tema
+───────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: #080008; }
+::-webkit-scrollbar-thumb { background: #8b0020; border-radius: 2px; }
